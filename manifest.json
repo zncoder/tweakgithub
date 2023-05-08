@@ -1,0 +1,15 @@
+{
+  "name": "tweakgithub",
+  "version": "1.0.0",
+  "manifest_version": 2,
+  "description": "Tweak Github UI",
+  "icons": {"48": "icons/48.png"},
+  "content_scripts": [
+    {
+      "matches": [
+				"https://github.com/*"
+			],
+      "js": ["page.js"]
+    }
+  ]
+}
