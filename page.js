@@ -1,9 +1,7 @@
-// add "Reviews" to the nav bar
-if (document.querySelector('#global-nav') && !document.querySelector('#my-review-requests')) {
-  let item = document.querySelector('#global-nav .js-selected-navigation-item')
-  let newItem = item.cloneNode(true)
-  newItem.href = "/pulls/review-requested"
-  newItem.innerHTML = 'Reviews'
-  newItem.id = 'my-review-requests'
-  item.parentNode.insertBefore(newItem, item.nextSibling)
+// replace Issues with my pull requests
+let issues = document.querySelector('#issues-tab')
+if (issues) {
+  let text = issues.querySelector('span[data-content="Issues"]')
+  text.innerText = "Pulls"
+  issues.href = '/pulls'
 }
