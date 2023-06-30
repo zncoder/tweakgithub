@@ -33,7 +33,7 @@ function observe() {
 function tweak() {
   obs.disconnect()
   replaceIssuesWithPulls()
-  replaceActionsWithRequested
+  replaceActionsWithRequested()
   replaceCodeFont()
   observe()
 }
