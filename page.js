@@ -13,7 +13,7 @@ function replaceActionsWithRequested() {
 
   let text = actions.querySelector('span[data-content="Actions"]')
   text.innerText = "Requested"
-  issues.href = '/pulls/review-requested'
+  text.href = '/pulls/review-requested'
 }
 
 function replaceCodeFont() {
