@@ -24,6 +24,16 @@ function replaceCodeFont() {
   }
 }
 
+function openPRsInNewTab() {
+  if (location.pathname === '/pulls' || location.pathname.startsWith("/pulls/")) {
+    let links = document.querySelectorAll('a[data-hovercard-type="pull_request"]')
+    for (let a of links) {
+      a.target = '_blank'
+      a.rel = 'noopener noreferrer'
+    }
+  }
+}
+
 const obs = new MutationObserver(tweak)
 
 function observe() {
@@ -35,6 +45,7 @@ function tweak() {
   replaceIssuesWithPulls()
   replaceActionsWithRequested()
   replaceCodeFont()
+  openPRsInNewTab()
   observe()
 }
 
