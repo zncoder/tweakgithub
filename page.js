@@ -34,6 +34,21 @@ function openPRsInNewTab() {
   }
 }
 
+function addBackToParentLink() {
+  if (location.pathname.indexOf('/actions/runs/') < 0) return
+  let parentLink = document.querySelector('.PageHeader-parentLink')
+  if (!parentLink) return
+  let parent = parentLink.querySelector('a')
+  for (let x of document.querySelectorAll('h3.ActionList-sectionDivider-title')) {
+    if (x.innerText === 'Jobs') {
+      let span = document.createElement('span')
+      span.innerHTML = `&nbsp;&nbsp;<a href=${parent.href}>⇦</a>`
+      x.appendChild(span)
+      break
+    }
+  }
+}
+
 const obs = new MutationObserver(tweak)
 
 function observe() {
@@ -41,11 +56,13 @@ function observe() {
 }
 
 function tweak() {
+  // console.log('tweak')
   obs.disconnect()
   replaceIssuesWithPulls()
   replaceActionsWithRequested()
   replaceCodeFont()
   openPRsInNewTab()
+  addBackToParentLink()
   observe()
 }
 
