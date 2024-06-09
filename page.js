@@ -29,7 +29,7 @@ function replaceSourcegraphCodeFont() {
 	if (!noscript || noscript.innerText.indexOf('Sourcegraph') < 0) return
 
 	for (let node of document.querySelectorAll('.cm-content')) {
-		node.classList.add('blob-code-inner-tweaksourcegraph')
+		node.classList.add('cm-content-tweaksourcegraph')
 	}
 }
 
