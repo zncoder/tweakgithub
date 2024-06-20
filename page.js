@@ -64,6 +64,10 @@ function observe() {
 	obs.observe(document, {attributes: false, childList: true, subtree: true})
 }
 
+function isSourceGraph() {
+	return location.hostname === 'sourcegraph.com' || location.hostname === 'sourcegraph.dev.databricks.com'
+}
+
 function tweak() {
 	// console.log('tweak')
 	obs.disconnect()
@@ -73,7 +77,7 @@ function tweak() {
 		replaceGithubCodeFont()
 		openPRsInNewTab()
 		addBackToParentLink()
-	} else if (location.hostname.endsWith('src.dev.databricks.com')) {
+	} else if (isSourceGraph()) {
 		replaceSourcegraphCodeFont()
 	}
 	observe()
