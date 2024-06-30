@@ -17,7 +17,23 @@ function replaceActionsWithRequested() {
 }
 
 function replaceGithubCodeFont() {
-	if (document.querySelector('blob-code-inner-tweakgithub')) return
+	if (document.querySelector('.blob-code-inner-tweakgithub')) return
+
+	let inert = document.querySelector('div[inert="inert"]')
+	if (inert) {
+		inert.classList.add('blob-code-inner-tweakgithub')
+		loop:
+		for (let ss of document.styleSheets) {
+			for (let r of ss.cssRules) {
+				if (r.selectorText === '.react-code-text') {
+					for (let p of ['font-family', 'font-size', 'line-height']) {
+						r.style.removeProperty(p)
+					}
+					break loop
+				}
+			}
+		}
+	}
 
 	for (let node of document.querySelectorAll('.blob-code-inner')) {
 		node.classList.add('blob-code-inner-tweakgithub')
@@ -25,8 +41,7 @@ function replaceGithubCodeFont() {
 }
 
 function replaceSourcegraphCodeFont() {
-	let noscript = document.querySelector('noscript')
-	if (!noscript || noscript.innerText.indexOf('Sourcegraph') < 0) return
+	if (document.querySelector('.cm-content-tweaksourcegraph')) return
 
 	for (let node of document.querySelectorAll('.cm-content')) {
 		node.classList.add('cm-content-tweaksourcegraph')
@@ -58,29 +73,40 @@ function addBackToParentLink() {
 	}
 }
 
-const obs = new MutationObserver(tweak)
+// cannot use observer, which is constantly triggered on github
+// const obs = new MutationObserver(tweak)
 
 function observe() {
 	obs.observe(document, {attributes: false, childList: true, subtree: true})
 }
 
 function isSourceGraph() {
-	return location.hostname === 'sourcegraph.com' || location.hostname === 'sourcegraph.dev.databricks.com'
+	return location.hostname === 'sourcegraph.com' || location.hostname === 'src.dev.databricks.com'
 }
 
 function tweak() {
-	// console.log('tweak')
-	obs.disconnect()
+	let fn
 	if (location.hostname.endsWith('github.com')) {
-		replaceIssuesWithPulls()
-		replaceActionsWithRequested()
-		replaceGithubCodeFont()
-		openPRsInNewTab()
-		addBackToParentLink()
+		fn = tweakGithub
 	} else if (isSourceGraph()) {
-		replaceSourcegraphCodeFont()
+		fn = tweakSourcegraph
 	}
-	observe()
+	if (fn) {
+		fn()
+		setInterval(fn, 2113)
+	}
+}
+
+function tweakGithub() {
+	replaceIssuesWithPulls()
+	replaceActionsWithRequested()
+	replaceGithubCodeFont()
+	openPRsInNewTab()
+	addBackToParentLink()
+}
+
+function tweakSourcegraph() {
+	replaceSourcegraphCodeFont()
 }
 
 tweak()
