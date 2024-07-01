@@ -17,16 +17,17 @@ function replaceActionsWithRequested() {
 }
 
 function replaceGithubCodeFont() {
-	if (document.querySelector('.blob-code-inner-tweakgithub')) return
+	// if (document.querySelector('.blob-code-inner-tweakgithub')) return
 
 	let inert = document.querySelector('div[inert="inert"]')
-	if (inert) {
+	if (inert && !inert.classList.contains('blob-code-inner-tweakgithub')) {
 		inert.classList.add('blob-code-inner-tweakgithub')
 		loop:
 		for (let ss of document.styleSheets) {
 			for (let r of ss.cssRules) {
 				if (r.selectorText === '.react-code-text') {
-					for (let p of ['font-family', 'font-size', 'line-height']) {
+					// for (let p of ['font-family', 'font-size', 'line-height']) {
+					for (let p of ['font-family', 'font-size']) {
 						r.style.removeProperty(p)
 					}
 					break loop
@@ -36,15 +37,19 @@ function replaceGithubCodeFont() {
 	}
 
 	for (let node of document.querySelectorAll('.blob-code-inner')) {
-		node.classList.add('blob-code-inner-tweakgithub')
+		if (!node.classList.contains('blob-code-inner-tweakgithub')) {
+			node.classList.add('blob-code-inner-tweakgithub')
+		}
 	}
 }
 
 function replaceSourcegraphCodeFont() {
-	if (document.querySelector('.cm-content-tweaksourcegraph')) return
+	// if (document.querySelector('.cm-content-tweaksourcegraph')) return
 
 	for (let node of document.querySelectorAll('.cm-content')) {
-		node.classList.add('cm-content-tweaksourcegraph')
+		if (!node.classList.contains('cm-content-tweaksourcegraph')) {
+			node.classList.add('cm-content-tweaksourcegraph')
+		}
 	}
 }
 
